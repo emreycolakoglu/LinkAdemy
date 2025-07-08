@@ -1,26 +1,19 @@
 {
-    "compilerOptions": {
-        "target": "ES2021",
-        "module": "CommonJS",
-        "moduleResolution": "Node",
-        "lib": [
-            "ES2021",
-            "DOM"
-        ],
-        "baseUrl": ".",
-        "paths": {
-            "@web/*": ["apps/web/*"],
-            "@core/*": [
-                "packages/core/*"
-            ]
-        },
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "strict": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "lib": ["ES2021", "DOM"],
+    "baseUrl": ".",
+    "paths": {
+      "@web/*": ["apps/web/*"],
+      "@core/*": ["packages/core/*"]
     },
-    "exclude": [
-        "node_modules"
-    ]
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": ["node_modules"]
 }
