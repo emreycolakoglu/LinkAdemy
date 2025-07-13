@@ -6,7 +6,7 @@
     "lib": ["ES2021", "DOM"],
     "baseUrl": ".",
     "paths": {
-      "@web/*": ["apps/web/*"],
+      "@web/*": ["apps/web/src/*"],
       "@core/*": ["packages/core/*"]
     },
     "esModuleInterop": true,
