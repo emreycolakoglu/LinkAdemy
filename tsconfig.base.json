@@ -8,7 +8,7 @@
     "paths": {
       "@web/*": ["apps/web/src/*"],
       "@core/*": ["packages/core/*"],
-      "@db/*": ["packages/db/*"]
+      "@db/*": ["packages/db/src/*"]
     },
     "esModuleInterop": true,
     "resolveJsonModule": true,
