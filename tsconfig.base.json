@@ -8,7 +8,7 @@
     "paths": {
       "@web/*": ["apps/web/src/*"],
       "@core/*": ["packages/core/*"],
-      "@db/*": ["packages/db/src/*"]
+      "@db": ["packages/db/generated/prisma/index"]
     },
     "esModuleInterop": true,
     "resolveJsonModule": true,
