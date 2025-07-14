@@ -8,11 +8,13 @@ import { NextPage } from "next";
 import type { ReactElement, ReactNode } from "react";
 import { Toaster } from "@web/components/ui/sonner";
 import { NextIntlClientProvider } from "next-intl";
+import { getCookie } from "cookies-next/client";
 
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
+  const locale = getCookie("NEXT_LOCALE");
 
   return (
     <ThemeProvider
@@ -30,7 +32,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           }}
         />
         <NextIntlClientProvider
-          locale={"en"}
+          locale={locale ?? "tr"}
           timeZone={
             Intl.DateTimeFormat().resolvedOptions().timeZone ?? "Europe/Vienna"
           }
