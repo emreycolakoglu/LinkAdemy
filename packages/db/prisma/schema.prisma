@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  phone     String?  @unique
+  password  String? // optional if OTP-only
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  consultant       ConsultantProfile?
+  institution      InstitutionProfile?
+  messages         Message[]
+  offers           Offer[]
+  trainingRequests TrainingRequest[]   @relation("RequestOwner")
+}
+
+enum Role {
+  CONSULTANT
+  INSTITUTION
+  ADMIN
+}
+
+model ConsultantProfile {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  fullName  String
+  title     String?
+  bio       String?
+  location  String?
+  languages String[] // ["en", "tr"]
+  skills    String[]
+  isPublic  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  offers    Offer[]
+}
+
+model InstitutionProfile {
+  id               String            @id @default(cuid())
+  user             User              @relation(fields: [userId], references: [id])
+  userId           String            @unique
+  companyName      String
+  sector           String?
+  website          String?
+  location         String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  trainingRequests TrainingRequest[] @relation("InstitutionRequest")
+}
+
+model TrainingRequest {
+  id          String         @id @default(cuid())
+  title       String
+  description String
+  category    String
+  format      TrainingFormat // ONLINE / OFFLINE / HYBRID
+  location    String?
+  startDate   DateTime?
+  endDate     DateTime?
+  budget      Int?
+  currency    String         @default("TRY")
+  status      RequestStatus  @default(OPEN)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  createdBy     User                @relation("RequestOwner", fields: [createdById], references: [id])
+  createdById   String
+  institution   InstitutionProfile? @relation("InstitutionRequest", fields: [institutionId], references: [id])
+  institutionId String?
+
+  offers Offer[]
+}
+
+enum TrainingFormat {
+  ONLINE
+  OFFLINE
+  HYBRID
+}
+
+enum RequestStatus {
+  OPEN
+  CLOSED
+  CANCELLED
+  MATCHED
+}
+
+model Offer {
+  id           String            @id @default(cuid())
+  consultant   ConsultantProfile @relation(fields: [consultantId], references: [id])
+  consultantId String
+  request      TrainingRequest   @relation(fields: [requestId], references: [id])
+  requestId    String
+  message      String
+  price        Int
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  messages Message[]
+  User     User?     @relation(fields: [userId], references: [id])
+  userId   String?
+}
+
+model Message {
+  id       String    @id @default(cuid())
+  sender   User      @relation(fields: [senderId], references: [id])
+  senderId String
+  offer    Offer     @relation(fields: [offerId], references: [id])
+  offerId  String
+  content  String
+  sentAt   DateTime  @default(now())
+  readAt   DateTime?
+}
