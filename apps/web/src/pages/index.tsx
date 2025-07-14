@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
-import {dummy} from "@core/test";
+import { dummy } from "@core/test";
+import { useTranslations } from "next-intl";
+import { GetStaticPropsContext } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,6 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
+  const t = useTranslations();
+
   return (
     <div
       className={`${geistSans.className} ${geistMono.className} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
@@ -29,10 +33,8 @@ export default function Home() {
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2 tracking-[-.01em]">
             {dummy}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/pages/index.tsx
-            </code>
-            .
+            {" - "}
+            {t("foo")}
           </li>
           <li className="tracking-[-.01em]">
             Save and see your changes instantly.
@@ -113,4 +115,16 @@ export default function Home() {
       </footer>
     </div>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      // You can get the messages from anywhere you like. The recommended
+      // pattern is to put them in JSON files separated by locale and read
+      // the desired one based on the `locale` received from Next.js.
+      messages: (await import(`../translations/${context.locale}.json`))
+        .default,
+    },
+  };
 }
