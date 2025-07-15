@@ -129,7 +129,9 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  institutionId: 'institutionId',
+  institutionRole: 'institutionRole'
 };
 
 exports.Prisma.ConsultantProfileScalarFieldEnum = {
@@ -148,7 +150,6 @@ exports.Prisma.ConsultantProfileScalarFieldEnum = {
 
 exports.Prisma.InstitutionProfileScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   companyName: 'companyName',
   sector: 'sector',
   website: 'website',
@@ -213,6 +214,11 @@ exports.Role = exports.$Enums.Role = {
   CONSULTANT: 'CONSULTANT',
   INSTITUTION: 'INSTITUTION',
   ADMIN: 'ADMIN'
+};
+
+exports.InstitutionUserRole = exports.$Enums.InstitutionUserRole = {
+  ADMIN: 'ADMIN',
+  USER: 'USER'
 };
 
 exports.TrainingFormat = exports.$Enums.TrainingFormat = {

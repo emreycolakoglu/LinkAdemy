@@ -15,19 +15,21 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   email     String   @unique
   phone     String?  @unique
   password  String? // optional if OTP-only
-  role      Role
+  role      Role?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   consultant       ConsultantProfile?
-  institution      InstitutionProfile?
+  institution      InstitutionProfile?  @relation(fields: [institutionId], references: [id])
+  institutionId    Int?
+  institutionRole  InstitutionUserRole?
   messages         Message[]
   offers           Offer[]
-  trainingRequests TrainingRequest[]   @relation("RequestOwner")
+  trainingRequests TrainingRequest[]    @relation("RequestOwner")
 }
 
 enum Role {
@@ -36,10 +38,15 @@ enum Role {
   ADMIN
 }
 
+enum InstitutionUserRole {
+  ADMIN
+  USER
+}
+
 model ConsultantProfile {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  userId    Int      @unique
   fullName  String
   title     String?
   bio       String?
@@ -53,9 +60,8 @@ model ConsultantProfile {
 }
 
 model InstitutionProfile {
-  id               String            @id @default(cuid())
-  user             User              @relation(fields: [userId], references: [id])
-  userId           String            @unique
+  id               Int               @id @default(autoincrement())
+  users            User[]
   companyName      String
   sector           String?
   website          String?
@@ -66,7 +72,7 @@ model InstitutionProfile {
 }
 
 model TrainingRequest {
-  id          String         @id @default(cuid())
+  id          Int            @id @default(autoincrement())
   title       String
   description String
   category    String
@@ -81,9 +87,9 @@ model TrainingRequest {
   updatedAt   DateTime       @updatedAt
 
   createdBy     User                @relation("RequestOwner", fields: [createdById], references: [id])
-  createdById   String
+  createdById   Int
   institution   InstitutionProfile? @relation("InstitutionRequest", fields: [institutionId], references: [id])
-  institutionId String?
+  institutionId Int?
 
   offers Offer[]
 }
@@ -102,11 +108,11 @@ enum RequestStatus {
 }
 
 model Offer {
-  id           String            @id @default(cuid())
+  id           Int               @id @default(autoincrement())
   consultant   ConsultantProfile @relation(fields: [consultantId], references: [id])
-  consultantId String
+  consultantId Int
   request      TrainingRequest   @relation(fields: [requestId], references: [id])
-  requestId    String
+  requestId    Int
   message      String
   price        Int
   createdAt    DateTime          @default(now())
@@ -114,15 +120,15 @@ model Offer {
 
   messages Message[]
   User     User?     @relation(fields: [userId], references: [id])
-  userId   String?
+  userId   Int?
 }
 
 model Message {
-  id       String    @id @default(cuid())
+  id       Int       @id @default(autoincrement())
   sender   User      @relation(fields: [senderId], references: [id])
-  senderId String
+  senderId Int
   offer    Offer     @relation(fields: [offerId], references: [id])
-  offerId  String
+  offerId  Int
   content  String
   sentAt   DateTime  @default(now())
   readAt   DateTime?
