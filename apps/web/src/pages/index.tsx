@@ -1,18 +1,7 @@
-import { useTranslations } from "next-intl";
 import { GetStaticPropsContext } from "next";
-import Link from "next/link";
+import { Homepage } from "@web/domains/landing/views/homepage";
 
-export default function Home() {
-  const t = useTranslations();
-
-  return (
-    <div>
-      <div>index page</div>
-      <Link href="/auth/signin">signin</Link>
-      <Link href="/auth/signup">signup</Link>
-    </div>
-  );
-}
+export default Homepage;
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   return {
