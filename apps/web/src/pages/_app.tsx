@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <ThemeProvider
       attribute="class"
       defaultTheme="light"
-      enableSystem
+      enableSystem={false}
       disableTransitionOnChange
     >
       <QueryClientProvider client={queryClient}>
