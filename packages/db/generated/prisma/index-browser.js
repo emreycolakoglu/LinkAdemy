@@ -128,6 +128,7 @@ exports.Prisma.UserScalarFieldEnum = {
   phone: 'phone',
   password: 'password',
   role: 'role',
+  isBanned: 'isBanned',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   institutionId: 'institutionId',

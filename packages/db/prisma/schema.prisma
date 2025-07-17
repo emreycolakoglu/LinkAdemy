@@ -20,6 +20,7 @@ model User {
   phone     String?  @unique
   password  String? // optional if OTP-only
   role      Role?
+  isBanned  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
